@@ -12,8 +12,7 @@ db = SQLAlchemy()
 class User(db.Model):
     """User of ratings website."""
     #name of table called 'users'
-    __tablename__ = "users"
-   
+    __tablename__ = "users" 
 
     user_id = db.Column(db.Integer,
                         autoincrement=True,

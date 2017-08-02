@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Login</h1>
+    <form action="/login" method="POST"> 
+        <!-- use post method to post login information to the route login_process on server.py -->
+
+        <div>
+            <!-- get form info (email) from the def login method on server.py -->
+            <label>Email: 
+                <input type="email" name="email" required>
+            </label>
+        </div>
+
+        <div>
+            <!-- get form info (email) from the def login method on server.py -->
+            <label>Password:
+                <input type="password" name="password" required>
+            </label>
+        </div>
+
+        <div>
+            <!-- get form button (submit) from the def login method on server.py -->
+            <input type="submit" value="Log In">
+        </div>
+
+    </form>
+{% endblock %}
