@@ -11,12 +11,14 @@ db = SQLAlchemy()
 
 class User(db.Model):
     """User of ratings website."""
-
+    #name of table called 'users'
     __tablename__ = "users"
+   
 
     user_id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
+
     email = db.Column(db.String(64), nullable=True)
     password = db.Column(db.String(64), nullable=True)
     age = db.Column(db.Integer, nullable=True)
@@ -56,9 +58,34 @@ class Rating(db.Model):
     rating_id = db.Column(db.Integer,
                           autoincrement=True,
                           primary_key=True)
-    movie_id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer)
+
+    #this is defining the foreign key as movies.movie_id
+    # it references another column in another table (parent table)
+    movie_id = db.Column(db.Integer,
+                         db.ForeignKey('movies.movie_id'))
+
+    # this is defining the foreign key as users.user_id
+    # the user_id column of the ratings table refers to the user_id column of 
+    # the users table
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+
     score = db.Column(db.Integer)
+
+
+    # Define relationship to user
+    #establishes the relationship between Rating and User objects
+    # backref means the relationship between User and rating is both ways
+    #listener on both sides which will mirror atrribute operations on both directions
+    #when we type r = Rating.query.get(1)...we can print r.user_id
+    user = db.relationship("User",
+                           backref=db.backref("ratings",
+                                              order_by=rating_id))
+
+    # Define relationship to movie
+    movie = db.relationship("Movie",
+                            backref=db.backref("ratings",
+                                               order_by=rating_id))
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
