@@ -1,15 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-
-  <h1>{{ user.email }} ({{ user.user_id }})</h1>
-
+<!-- get email from user database -->
+  <h1>Email: {{ user.email }} </h1><br>
+  <!-- get user_id from user database -->
+  <h2>User ID: ({{ user.user_id }})</h2>
+<!-- get the user age from user database -->
   <p>Age: {{ user.age }}</p>
+ <!-- get the user zipcode from user database  -->
   <p>Zipcode: {{ user.zipcode }}</p>
 
   {% if user.ratings %}
-
+    <!-- this 'if' statement means we can only see "Ratings" if the user has ratings...if new user has no record, we will not see any ratings -->
     <h2>Ratings</h2>
     <ul>
+    <!-- for loop for the ratings in our database user.ratings -->
     {% for rating in user.ratings %}
       <li>
         <a href="/movies/{{ rating.movie_id }}">{{ rating.movie.title }}</a>

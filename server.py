@@ -42,64 +42,83 @@ def register_process():
     """Process registration information."""
     #create a variable called user and receive all of the information we
     #requested from our registration form
-    email = request.form['email']#gets email from register_form.html
-    password=request.form['password']#gets password from register_form.html
-    age=request.form['age']#gets age from register_form.html
-    zipcode=request.form['zipcode']#gets zipcode from register_form.html
+
+    #gets email from register_form.html
+    email = request.form['email']
+    #gets password from register_form.html
+    password=request.form['password']
+    #gets age from register_form.html
+    age=request.form['age']
+    #gets zipcode from register_form.html
+    zipcode=request.form['zipcode']
 
     #enters in the information we collected and assigns it to the variable 'user'
     user = User(email=email, password=password, age=age, zipcode=zipcode)
-    db.session.add(user)#add user to the User database
-    db.session.commit()#commit our add to the User database
-    flash('User successfully registered!')#flash message that shows user is 
-    #successfull registered
-    return redirect('/')
+    #add user to the User database
+    db.session.add(user)
+    #commit our add to the User database
+    db.session.commit()
+    #flash message that shows user is successfull registered
+    flash('User successfully registered!')
     #route redirects back to users ('/users')
+    return redirect('/')
+
 
 
 #return the login_form.html template using get method to get information
 @app.route('/login', methods=['GET'])
 def login_form():
     """Render login form."""
-    return render_template("login_form.html")#return login_form.html
+    #return login_form.html
+    return render_template("login_form.html")
 
 #receive information we got from login_form.html with post method
 @app.route('/login', methods=['POST'])
 def login_process():
     """Process login information."""
-    email = request.form["email"]#get 'email' variable from login_form.html
-    password = request.form["password"]#get 'password' variable from login_form.html
+    #get 'email' variable from login_form.html
+    email = request.form["email"]
+    #get 'password' variable from login_form.html
+    password = request.form["password"]
 
     #get user query from User database db.model on model.py
     user = User.query.filter_by(email=email).first()
 
-
-    if user == None:#if email does not exist in our query search above
+    #if email does not exist in our query search above
+    if user == None:
         flash("User does not exist!")
-        return redirect("/login")#return to login_form.html so the user can re-enter info
+        #return to login_form.html so the user can re-enter info
+        return redirect("/login")
 
     if user.password != password:
         flash("You have entered the wrong password!")
-        return redirect("/login")#return to login_form.html so the user can re-enter pw
-
-    session["user_id"] = user.user_id#add user_id to session dictionary
-
-    flash("Logged in")#flash a message that says "Logged in"
-    return redirect("/users")#redirect to user_list.html
+        #return to login_form.html so the user can re-enter pw
+        return redirect("/login")
+    #add user_id to session dictionary
+    session["user_id"] = user.user_id
+    #flash a message that says "Logged in"
+    flash("Logged in")
+    #redirect to homepage
+    return redirect("/")
 
 
 @app.route('/logout')
 def logout():
     """Log out page."""
-    del session["user_id"]#del user from the session
+    #del user from the session
+    del session["user_id"]
     flash("Logged Out.")
-    return redirect("/")#redirect back to homepage
+    #redirect back to homepage
+    return redirect("/")
 
 
+#when on browser, enter random interger such as localhost:5000/users/5
 @app.route("/users/<int:user_id>")
 def user_detail(user_id):
     """Show info about user."""
+    #query to get user by user_id
     user = User.query.get(user_id)
+    #return and render users.html where user=user
     return render_template("users.html", user=user)
 
 
