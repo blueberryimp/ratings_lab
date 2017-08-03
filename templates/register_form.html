@@ -1,42 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="well spaced" style="width:40%;">
+
 <h1>Register</h1>
 
 <form action="register" method="POST">
+    <!-- this is the POST method that goes to the route of /register on
+    server.py...it is posting the entered email, password, age, zipcode, and submit button -->
 
-    <div class="form-group">
-        <label>
-            Email
-            <input type="email" name="email" class="form-control">
-        </label>
-    </div>
+    Email: <input type="email" name="email" >
+      
+    Password: <input type="password" name="password" >
+  
+    Age: <input type="number" name="age">
+      
+    Zipcode: <input type="text" name="zipcode" >
 
-    <div class="form-group">
-        <label>
-            Password
-            <input type="password" name="password" class="form-control">
-        </label>
-    </div>
-
-    <div class="form-group">
-        <label>
-            Age
-            <input type="number" name="age" class="form-control">
-        </label>
-    </div>
-
-    <div class="form-group">
-        <label>
-            Zipcode
-            <input type="text" name="zipcode" class="form-control">
-        </label>
-    </div>
-
-    <div class="form-group">
-        <input type="submit" value="Register, Mortal" class="btn btn-danger">
-    </div>
+    Submit: <input type="submit" value="Register Now!">
+    
 
 </form>
-</div>
+
 {% endblock %}

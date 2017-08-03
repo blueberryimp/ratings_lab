@@ -28,7 +28,7 @@ def index():
 def user_list():
     """Show list of users."""
     users = User.query.all()#query all user data from User class
-    return render_template('users.html', users=users)#return users.html
+    return render_template('user_list.html', users=users)#return users.html
 
 
 #gets request to get user information for registration
@@ -36,17 +36,25 @@ def user_list():
 def register():
     return render_template('register_form.html')#gets form info from register_form
 
-#post request for receive(post) what information we have gotten
+#post for receive(post) what information we have gotten
 @app.route('/register', methods=['POST'])
-def process_form():
+def register_process():
+    """Process registration information."""
     #create a variable called user and receive all of the information we
     #requested from our registration form
-    user = User(email=request.form['email'], password=request.form['password'],
-            age=request.form['age'], zipcode=request.form['zipcode'])
-    db.session.add(user)#add user to database the User database
-    db.session.commit()#commit our add 
-    flash('User successfully registered!')
-    return redirect('/')#route redirects back to homepage ('/')
+    email = request.form['email']#gets email from register_form.html
+    password=request.form['password']#gets password from register_form.html
+    age=request.form['age']#gets age from register_form.html
+    zipcode=request.form['zipcode']#gets zipcode from register_form.html
+
+    #enters in the information we collected and assigns it to the variable 'user'
+    user = User(email=email, password=password, age=age, zipcode=zipcode)
+    db.session.add(user)#add user to the User database
+    db.session.commit()#commit our add to the User database
+    flash('User successfully registered!')#flash message that shows user is 
+    #successfull registered
+    return redirect('/users')
+    #route redirects back to users ('/users')
 
 
 #return the login_form.html template using get method to get information
@@ -55,7 +63,7 @@ def login_form():
     """Render login form."""
     return render_template("login_form.html")#return login_form.html
 
-
+#receive information we got from login_form.html with post method
 @app.route('/login', methods=['POST'])
 def login_process():
     """Process login information."""
@@ -63,10 +71,10 @@ def login_process():
     password = request.form["password"]#get 'password' variable from login_form.html
 
     #get user query from User database db.model on model.py
-    user = User.query.filter_by(email=email).first()#get user from class User on model.py
+    user = User.query.filter_by(email=email).first()
 
 
-    if user == None: #if email does not exist in our query search above
+    if user == None:#if email does not exist in our query search above
         flash("User does not exist!")
         return redirect("/login")#return to login_form.html so the user can re-enter info
 
@@ -80,27 +88,27 @@ def login_process():
     return redirect("/users")#redirect to user_list.html
 
 
-@app.route('/logout')
-def logout():
-    """Log out page."""
-    del session["user_id"]#del user from the session
-    flash("Logged Out.")
-    return redirect("/")#redirect back to homepage
+# @app.route('/logout')
+# def logout():
+#     """Log out page."""
+#     del session["user_id"]#del user from the session
+#     flash("Logged Out.")
+#     return redirect("/")#redirect back to homepage
 
 
-@app.route("/users/<int:user_id>")
-def user_detail(user_id):
-    """Show info about user."""
-    user = User.query.get(user_id) #
-    return render_template("user.html", user=user)
+# @app.route("/users/<int:user_id>")
+# def user_detail(user_id):
+#     """Show info about user."""
+#     user = User.query.get(user_id)#
+#     return render_template("users.html", user=user)
 
 
-@app.route("/movies")
-def movie_list():
-    """Show list of movies."""
+# @app.route("/movies")
+# def movie_list():
+#     """Show list of movies."""
 
-    movies = Movie.query.order_by('title').all()
-    return render_template("movie_list.html", movies=movies)
+#     movies = Movie.query.order_by('title').all()
+#     return render_template("movie_list.html", movies=movies)
 
 
 if __name__ == "__main__":
