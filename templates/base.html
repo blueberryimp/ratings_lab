@@ -4,6 +4,19 @@
   <title>{% block title %} title {% endblock %} </title>
 </head>
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
+
+
 <body>
 
   {% block content %} put your content here {% endblock %}

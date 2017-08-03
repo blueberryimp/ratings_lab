@@ -53,7 +53,7 @@ def register_process():
     db.session.commit()#commit our add to the User database
     flash('User successfully registered!')#flash message that shows user is 
     #successfull registered
-    return redirect('/users')
+    return redirect('/')
     #route redirects back to users ('/users')
 
 
@@ -88,27 +88,26 @@ def login_process():
     return redirect("/users")#redirect to user_list.html
 
 
-# @app.route('/logout')
-# def logout():
-#     """Log out page."""
-#     del session["user_id"]#del user from the session
-#     flash("Logged Out.")
-#     return redirect("/")#redirect back to homepage
+@app.route('/logout')
+def logout():
+    """Log out page."""
+    del session["user_id"]#del user from the session
+    flash("Logged Out.")
+    return redirect("/")#redirect back to homepage
 
 
-# @app.route("/users/<int:user_id>")
-# def user_detail(user_id):
-#     """Show info about user."""
-#     user = User.query.get(user_id)#
-#     return render_template("users.html", user=user)
+@app.route("/users/<int:user_id>")
+def user_detail(user_id):
+    """Show info about user."""
+    user = User.query.get(user_id)
+    return render_template("users.html", user=user)
 
 
-# @app.route("/movies")
-# def movie_list():
-#     """Show list of movies."""
-
-#     movies = Movie.query.order_by('title').all()
-#     return render_template("movie_list.html", movies=movies)
+@app.route("/movies")
+def movie_list():
+    """Show list of movies."""
+    movies = Movie.query.order_by('title').all()
+    return render_template("movie_list.html", movies=movies)
 
 
 if __name__ == "__main__":
